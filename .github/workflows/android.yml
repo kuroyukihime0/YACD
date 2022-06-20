@@ -50,6 +50,8 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }} 
       - name: Get Name of Artifact
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           ARTIFACT_PATHNAME=$(ls apk/*.apk | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
