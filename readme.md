@@ -1,0 +1,1 @@
+## [yacd](https://github.com/haishanh/yacd) bundled app for Merlin Clash
