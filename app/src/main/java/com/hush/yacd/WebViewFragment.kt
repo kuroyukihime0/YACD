@@ -3,16 +3,15 @@ package com.hush.yacd
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.*
+import android.view.*
 import android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
 import androidx.fragment.app.Fragment
-import com.hush.yacd.data.Config
+import androidx.navigation.fragment.findNavController
 import com.hush.yacd.data.Events
-import com.hush.yacd.data.FrontStyle
-import com.hush.yacd.data.configUrl
+import com.hush.yacd.data.bean.FrontStyle
+import com.hush.yacd.data.bean.configUrl
+import com.hush.yacd.data.store.AppStore
+import com.hush.yacd.data.store.ProfileStore
 import com.hush.yacd.databinding.FragmentFirstBinding
 
 /**
@@ -34,6 +33,15 @@ class WebViewFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -58,17 +66,15 @@ class WebViewFragment : Fragment() {
             javaScriptCanOpenWindowsAutomatically = true
             domStorageEnabled = true
         }
-     
+        binding.fab.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
         loadPage()
     }
-    
-    private fun loadPage(){
+
+    private fun loadPage() {
         binding.webview.loadUrl(
-            FrontStyle.values()[Config.front_style].configUrl(
-                "192.168.50.1",
-                "9990",
-                "clash"
-            )
+            FrontStyle.values()[AppStore.front_style].configUrl(ProfileStore.selectedProfile())
         )
     }
 

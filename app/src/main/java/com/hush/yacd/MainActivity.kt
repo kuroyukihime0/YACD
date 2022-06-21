@@ -1,18 +1,16 @@
 package com.hush.yacd
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import com.hush.yacd.data.Config
 import com.hush.yacd.data.Events
-import com.hush.yacd.data.FrontStyle
+import com.hush.yacd.data.bean.FrontStyle
+import com.hush.yacd.data.store.AppStore
 import com.hush.yacd.databinding.ActivityMainBinding
 import com.hush.yacd.util.DialogUtil
 
@@ -22,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -33,17 +31,11 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_empty, menu)
         return true
     }
 
@@ -57,9 +49,9 @@ class MainActivity : AppCompatActivity() {
                     context = this,
                     title = "Front Style",
                     choices = FrontStyle.values().map { it.name }.toTypedArray(),
-                    checked = Config.front_style,
+                    checked = AppStore.front_style,
                 ) {
-                    Config.front_style = it
+                    AppStore.front_style = it
                     Events.EVENT_RELOAD.postData(true)
                 }
                 true

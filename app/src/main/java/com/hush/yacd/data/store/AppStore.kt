@@ -1,11 +1,11 @@
-package com.hush.yacd.data
+package com.hush.yacd.data.store
 
 import com.dylanc.mmkv.MMKVOwner
 import com.dylanc.mmkv.mmkvInt
-import com.dylanc.mmkv.mmkvString
 
 
-object Config : MMKVOwner {
+object AppStore : MMKVOwner {
 
     var front_style by mmkvInt(default = 0)
+
 }
